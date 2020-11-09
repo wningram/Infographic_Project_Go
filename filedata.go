@@ -122,6 +122,51 @@ func (fd *FileData) GetMostFrequentBigWord() (string, int, error) {
 	return bigWord, bigWordCount, nil
 }
 
+// CountSmallWords returns a count of all the small words in the file.
+func (fd *FileData) CountSmallWords() (int, error) {
+	totalCount := 0
+	if len(fd.WordCounts) == 0 {
+		return 0, &ErrorDataNotPopulated{"WordCounts"}
+	}
+	for word, count := range fd.WordCounts {
+		if len(word) > 0 && len(word) <= 4 {
+			totalCount += count
+		}
+	}
+
+	return totalCount, nil
+}
+
+// CountMediumWords returns a count of all the medium words in the file.
+func (fd *FileData) CountMediumWords() (int, error) {
+	totalCount := 0
+	if len(fd.WordCounts) == 0 {
+		return 0, &ErrorDataNotPopulated{"WordCounts"}
+	}
+	for word, count := range fd.WordCounts {
+		if len(word) >= 5 && len(word) <= 7 {
+			totalCount += count
+		}
+	}
+
+	return totalCount, nil
+}
+
+// CountBigWords returns a count of all the big words in the file.
+func (fd *FileData) CountBigWords() (int, error) {
+	totalCount := 0
+	if len(fd.WordCounts) == 0 {
+		return 0, &ErrorDataNotPopulated{"WordCounts"}
+	}
+	for word, count := range fd.WordCounts {
+		if len(word) >= 8 {
+			totalCount += count
+		}
+	}
+
+	return totalCount, nil
+}
+
 // Populate populates the members of FileData object instance.
 func (fd *FileData) Populate(fileName string) (err error) {
 	if len(fileName) == 0 {
